@@ -1,0 +1,77 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          Int      @id @default(autoincrement())
+  phoneNumber String   @unique @db.VarChar(20)  // used instead of username
+  password    String   @db.VarChar(255)
+  name        String   @db.VarChar(100)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+
+model Trader {
+  id           Int           @id @default(autoincrement())
+  name         String        @db.VarChar(100)
+  phoneNumber  String        @db.VarChar(20)
+  companyName  String?       @db.VarChar(100)
+  address      String?       @db.VarChar(255)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  pattiReports PattiReport[]
+}
+
+model PattiReport {
+  id             Int            @id @default(autoincrement())
+  traderId       Int
+  date           DateTime
+  daagNumber     Int
+  commissionRate Decimal        @default(10.0) @db.Decimal(5, 2)
+  commission     Decimal        @db.Decimal(10, 2)
+  motorRent      Decimal        @default(0.0) @db.Decimal(10, 2)
+  cooliePerCaret Decimal        @default(6.0) @db.Decimal(10, 2)
+  jagaBhade      Decimal        @default(0.0) @db.Decimal(10, 2)
+  postage        Decimal        @default(0.0) @db.Decimal(10, 2)
+  caretCount     Int
+  totalSale      Decimal        @db.Decimal(10, 2)
+  expense        Decimal        @db.Decimal(10, 2)
+  balance        Decimal        @db.Decimal(10, 2)
+  paymentMode    PaymentMode
+  paymentStatus  PaymentStatus
+  paymentDate    DateTime?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  flowers        FlowerDetail[]
+  trader         Trader         @relation(fields: [traderId], references: [id], onDelete: Cascade)
+}
+
+model FlowerDetail {
+  id            Int         @id @default(autoincrement())
+  pattiReportId Int
+  flowerName    String      @db.VarChar(100)
+  carets        Int
+  qtyPerCaret   Decimal     @db.Decimal(10, 2)
+  totalQty      Decimal     @db.Decimal(10, 2)
+  rate          Decimal     @db.Decimal(10, 2)
+  totalAmount   Decimal     @db.Decimal(10, 2)
+  pattiReport   PattiReport @relation(fields: [pattiReportId], references: [id], onDelete: Cascade)
+}
+
+enum PaymentMode {
+  Cash
+  Bank
+  UPI
+}
+
+enum PaymentStatus {
+  Paid
+  Unpaid
+  Partial
+}
