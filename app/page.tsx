@@ -1,22 +1,22 @@
-'use client';
+"use client";
 
 import { signOut, useSession } from "next-auth/react";
+import Hero from "./components/Hero";
+import Badge from "./components/badge";
+import { HomeCard } from "./components/HomeCard";
 
 export default function Home() {
   const { data: session } = useSession();
+
   return (
-    <div className="flex flex-col items-center justify-center mt-10 gap-4">
-      <p>hi</p>
-      <button
-        onClick={() => signOut({ callbackUrl: "/login" })}
-        className="px-4 py-2 bg-red-500 text-white rounded"
-      >
-        Logout
-      </button>
-<p>Welcome, {session?.user?.name}</p>
+    <div className="">
+      <Badge />
+      <div className="max-w-screen-lg mx-auto px-4 sm:px-6 lg:px-8">
+        <Hero />
+        <div className="mt-6">
+          <HomeCard />
+        </div>
+      </div>
     </div>
   );
 }
-
-
-
