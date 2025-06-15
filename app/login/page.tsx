@@ -19,6 +19,8 @@ export default function LoginPage() {
     e.preventDefault();
     setError("");
 
+    // Normalize phone number: remove leading +91 or 91
+    
     const res = await signIn("credentials", {
       phoneNumber,
       password,
@@ -48,17 +50,19 @@ export default function LoginPage() {
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit} className="space-y-5 text-base">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Phone Number
               </label>
               <input
-                type="text"
+                type="tel"
+                inputMode="numeric"
+                autoComplete="tel"
                 value={phoneNumber}
                 onChange={(e) => setPhoneNumber(e.target.value)}
                 placeholder="+91XXXXXXXXXX"
-                className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500"
+                className="w-full rounded-md border border-gray-300 px-3 py-2 text-base focus:outline-none focus:ring-2 focus:ring-gray-500"
               />
             </div>
 
@@ -68,10 +72,11 @@ export default function LoginPage() {
               </label>
               <input
                 type="password"
+                autoComplete="current-password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500"
+                className="w-full rounded-md border border-gray-300 px-3 py-2 text-base focus:outline-none focus:ring-2 focus:ring-gray-500"
               />
             </div>
 

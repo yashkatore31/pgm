@@ -3,10 +3,10 @@ import { prisma } from "@/lib/prisma"
 
 export async function GET() {
   try {
-    const traders = await prisma.trader.findMany({
+    const trader = await prisma.trader.findMany({
       orderBy: { createdAt: "desc" },
     })
-    return NextResponse.json(traders)
+    return NextResponse.json(trader)
   } catch (error) {
     return NextResponse.json({ error: "Failed to fetch traders" }, { status: 500 })
   }
